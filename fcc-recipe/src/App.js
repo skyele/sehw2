@@ -33,8 +33,9 @@ close = () => {
   }
 }
 
+//Open a modal
 open =(state)=>{
-
+this.setState({[state] : true});
 }
 
   render() {
