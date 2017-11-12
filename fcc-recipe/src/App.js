@@ -11,12 +11,13 @@ import FormControl from 'react-bootstrap/lib/FormControl'
 
 class App extends Component {
 state ={
-  recipes:[
+  recipes :[
       {recipeName:'Sky1',ingredients:['SJTUer1','Charming','MEGA SMART']},
       {recipeName:'Sky2',ingredients:['SJTUer2','Charming','MEGA SMART']},
       {recipeName:'Sky3',ingredients:['SJTUer3','Charming','MEGA SMART']}
   ],
-    showAdd: false
+    showAdd : false,
+    newestRecipe :{recipeName:"",ingredients:[]}
 }
 
 //Delete a recipe
@@ -25,6 +26,11 @@ let recipes=this.state.recipes.slice();
 recipes.splice(index,1);
 this.setState({recipes});
 }
+//Update newestRecipe.recipeName
+newestRecipeRecipeName(recipeName ,ingredients){
+  this.setState({newestRecipe:{recipeName: recipeName,ingredients:ingredients}} );
+}
+
 
 //Closes a modal
 close = () => {
@@ -39,7 +45,7 @@ this.setState({[state] : true});
 }
 
   render() {
-    const{recipes}= this.state;
+    const{recipes,newestRecipe}= this.state;
     return (
         <div className="App container">
         <Accordion>
@@ -61,7 +67,20 @@ this.setState({[state] : true});
         </Accordion>
 
 <Modal show={this.state.showAdd} onHide ={this.close}>
-
+<Modal.Header closeButton>
+          <Modal.Title>Add Recipe</Modal.Title>
+          <Modal.Body>
+            <FormGroup>
+              <ControlLabel>Recipe Name</ControlLabel>
+              <FormControl>
+              type="text"
+              value={newestRecipe.recipeName}
+              placeholder="Enter Recipe Name"
+              onChange ={(event)=>this.updateNewRecipe(event.target.value,newestRecipe.ingredients)}
+      </FormControl>
+      </FormGroup>
+      </Modal.Body>
+      </Modal.Header>
   </Modal>
 
 
