@@ -72,12 +72,12 @@ this.setState({[state] : true});
           <Modal.Body>
             <FormGroup>
               <ControlLabel>Recipe Name</ControlLabel>
-              <FormControl>
-              type="text"
+              <FormControl
+              type ="text"
               value={newestRecipe.recipeName}
               placeholder="Enter Recipe Name"
               onChange ={(event)=>this.updateNewRecipe(event.target.value,newestRecipe.ingredients)}
-      </FormControl>
+      ></FormControl>
       </FormGroup>
       </Modal.Body>
       </Modal.Header>
