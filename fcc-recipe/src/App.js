@@ -15,7 +15,8 @@ state ={
       {recipeName:'Sky1',ingredients:['SJTUer1','Charming','MEGA SMART']},
       {recipeName:'Sky2',ingredients:['SJTUer2','Charming','MEGA SMART']},
       {recipeName:'Sky3',ingredients:['SJTUer3','Charming','MEGA SMART']}
-  ]
+  ],
+    showAdd: false
 }
 
 //Delete a recipe
@@ -23,6 +24,17 @@ deleteRecipe(index){
 let recipes=this.state.recipes.slice();
 recipes.splice(index,1);
 this.setState({recipes});
+}
+
+//Closes a modal
+close = () => {
+  if(this.state.showAdd) {
+      this.setState({showAdd: false})
+  }
+}
+
+open =(state)=>{
+
 }
 
   render() {
@@ -47,10 +59,12 @@ this.setState({recipes});
           ))}
         </Accordion>
 
-<Modal show={this.state.showAdd}></Modal>
+<Modal show={this.state.showAdd} onHide ={this.close}>
+
+  </Modal>
 
 
-          <Button bsStyle="primary">Add Recipe</Button>
+          <Button bsStyle="primary" onClick ={(event)=>this.open("showAdd")}>Add Recipe</Button>
       </div>
     );
   }
