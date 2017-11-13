@@ -17,6 +17,8 @@ state ={
       {recipeName:'Sky3',ingredients:['SJTUer3','Charming','MEGA SMART']}
   ],
     showAdd : false,
+    showEdit : false,
+    currentIndex : 0,
     newestRecipe :{recipeName:"",ingredients:[]}
 }
 
@@ -45,19 +47,30 @@ close = () => {
   if(this.state.showAdd) {
       this.setState({showAdd: false})
   }
+  else if(this.state.showEdit){
+    this.setState({showEdit:false});
+  }
 }
 
 //Open a modal
-open =(state)=>{
+open =(state,currentIndex)=>{
 this.setState({[state] : true});
+this.setState({currentIndex});
+}
+//Update recipeName
+updateRecipeName(recipeName,currentIndex){
+let recipes=this.recipes.slice();
+recipes[currentIndex]={recipeName: recipeName,ingredients:recipes[currentIndex].ingredients};
+this.setState(recipes);
 }
 
   render() {
-    const{recipes,newestRecipe}= this.state;
+    const{recipes,newestRecipe,currentIndex}= this.state;
     console.log(newestRecipe);
     return (
         <div className="App container">
           (recipes.length>0 &&(
+              <div>
           <Accordion>
           {recipes.map((recipe,index) => (
           <Panel header={recipe.recipeName} eventkey={index} key= {index}>
@@ -68,14 +81,45 @@ this.setState({[state] : true});
   </o1>
       <ButtonToolbar>
       <Button bsStyle="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
-      <Button bsStyle="default">Edit Recipe</Button>
+      <Button bsStyle="default" onClick={(event)=>this.open("showEdit",index)}>Edit Recipe</Button>
       </ButtonToolbar>
       </Panel>
 
-
   ))}
   </Accordion>
-          ))
+
+      <Modal show={this.state.showEdit} onHide ={this.close}>
+  <Modal.Header closeButton>
+      <Modal.Title>Edit Recipe</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+
+      <FormGroup controlId="formBasicTest">
+          <ControlLabel>Recipe Name</ControlLabel>
+      <FormControl
+      type ="text"
+      value={recipes[currentIndex].recipeName}
+      placeholder="Enter text"
+      onChange ={(event)=>this.updateRecipeName(event.target.value,currentIndex)}
+  />
+  <FormGroup >
+
+      <FormGroup controlId="formControlsTextarea">
+          <ControlLabel>Ingredients</ControlLabel>
+          <FormControl
+      componentClass ="textarea"
+      onChange ={(event)=>this.updateIngredients(event.target.value.split(","),currentIndex)}
+  >
+  </FormControl>
+      </FormGroup>
+      </Modal.Body>
+      <Modal.Footer>
+      <Button onClick={this.close}>Close</Button>
+      </Modal.Footer>
+      </Modal>
+          </div>
+  )}
+
 
 
 <Modal show={this.state.showAdd} onHide ={this.close}>
@@ -103,7 +147,7 @@ this.setState({[state] : true});
       </FormGroup>
       </Modal.Body>
           <Modal.Footer>
-          <Button onClick-{(event)=>this.saveNewRecipe()}></Button>
+          <Button onClick={(event)=>this.saveNewRecipe()}>Save New Recipe</Button>
       </Modal.Footer>
       </Modal.Header>
   </Modal>
