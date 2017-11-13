@@ -57,11 +57,17 @@ open =(state,currentIndex)=>{
 this.setState({[state] : true});
 this.setState({currentIndex});
 }
-//Update recipeName
+//Update recipeName of a recipe
 updateRecipeName(recipeName,currentIndex){
 let recipes=this.recipes.slice();
 recipes[currentIndex]={recipeName: recipeName,ingredients:recipes[currentIndex].ingredients};
 this.setState(recipes);
+}
+//Update ingredients of a recipe
+updateIngredients(ingredients,currentIndex){
+    let recipes=this.recipes.slice();
+    recipes[currentIndex]={recipeName:recipes[currentIndex].recipeName,ingredients:ingredients};
+    this.setState({recipes});
 }
 
   render() {
@@ -102,14 +108,14 @@ this.setState(recipes);
       placeholder="Enter text"
       onChange ={(event)=>this.updateRecipeName(event.target.value,currentIndex)}
   />
-  <FormGroup >
+  </FormGroup>
 
       <FormGroup controlId="formControlsTextarea">
           <ControlLabel>Ingredients</ControlLabel>
           <FormControl
       componentClass ="textarea"
       onChange ={(event)=>this.updateIngredients(event.target.value.split(","),currentIndex)}
-  >
+      placeholder="Enter Ingredients (Seperate By Commas)" value={recipes[currentIndex].ingredients}>
   </FormControl>
       </FormGroup>
       </Modal.Body>
