@@ -26,11 +26,19 @@ let recipes=this.state.recipes.slice();
 recipes.splice(index,1);
 this.setState({recipes});
 }
-//Update newestRecipe.recipeName
-newestRecipeRecipeName(recipeName ,ingredients){
+//Update newestRecipe
+updateNewRecipe(recipeName ,ingredients){
   this.setState({newestRecipe:{recipeName: recipeName,ingredients:ingredients}} );
 }
+//Save a new recipe to recipes
+saveNewRecipe() {
+    let recipes = this.state.recipes.slice();
+    recipes.push({recipeName:this.state.newestRecipe.recipeName,ingredients:this.state.newestRecipe.ingredients } );
 
+    this.setState({recipes});
+    this.setState({newestRecipe: {recipeName: '', ingredients: []}});
+    this.close();
+}
 
 //Closes a modal
 close = () => {
@@ -46,31 +54,35 @@ this.setState({[state] : true});
 
   render() {
     const{recipes,newestRecipe}= this.state;
+    console.log(newestRecipe);
     return (
         <div className="App container">
-        <Accordion>
+          (recipes.length>0 &&(
+          <Accordion>
           {recipes.map((recipe,index) => (
-<Panel header={recipe.recipeName} eventkey={index} key= {index}>
-<o1>
-       {recipe.ingredients.map((item)=>(
-           <li key={item}> {item} </li>
-       ))}
-</o1>
-<ButtonToolbar>
-<Button bsStyle="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
+          <Panel header={recipe.recipeName} eventkey={index} key= {index}>
+          <o1>
+          {recipe.ingredients.map((item)=>(
+          <li key={item}> {item} </li>
+  ))}
+  </o1>
+      <ButtonToolbar>
+      <Button bsStyle="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
       <Button bsStyle="default">Edit Recipe</Button>
       </ButtonToolbar>
-</Panel>
+      </Panel>
 
 
-          ))}
-        </Accordion>
+  ))}
+  </Accordion>
+          ))
+
 
 <Modal show={this.state.showAdd} onHide ={this.close}>
 <Modal.Header closeButton>
           <Modal.Title>Add Recipe</Modal.Title>
           <Modal.Body>
-            <FormGroup>
+            <FormGroup controlId="formBasicTest">
               <ControlLabel>Recipe Name</ControlLabel>
               <FormControl
               type ="text"
@@ -78,8 +90,21 @@ this.setState({[state] : true});
               placeholder="Enter Recipe Name"
               onChange ={(event)=>this.updateNewRecipe(event.target.value,newestRecipe.ingredients)}
       ></FormControl>
+      <FormGroup controlId="formControlsTestarea">
+          <ControlLabel>Recipe Name</ControlLabel>
+      <FormControl
+      type ="textarea"
+      value={newestRecipe.recipeName}
+      placeholder="Enter Ingredients (Seperate By Commas)"
+      onChange ={(event)=>this.updateNewRecipe(newestRecipe.recipeName,event.target.value.split(","))}
+      value={newestRecipe.ingredients}
+      ></FormControl>
+      </FormGroup>
       </FormGroup>
       </Modal.Body>
+          <Modal.Footer>
+          <Button onClick-{(event)=>this.saveNewRecipe()}></Button>
+      </Modal.Footer>
       </Modal.Header>
   </Modal>
 
