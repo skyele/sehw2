@@ -47,7 +47,7 @@ close = () => {
   if(this.state.showAdd) {
       this.setState({showAdd: false})
   }
-  else if(this.state.showEdit){
+  if(this.state.showEdit){
     this.setState({showEdit:false});
   }
 }
@@ -61,11 +61,11 @@ this.setState({currentIndex});
 updateRecipeName(recipeName,currentIndex){
 let recipes=this.recipes.slice();
 recipes[currentIndex]={recipeName: recipeName,ingredients:recipes[currentIndex].ingredients};
-this.setState(recipes);
+this.setState({recipes});
 }
 //Update ingredients of a recipe
 updateIngredients(ingredients,currentIndex){
-    let recipes=this.recipes.slice();
+    let recipes=this.state.recipes.slice();
     recipes[currentIndex]={recipeName:recipes[currentIndex].recipeName,ingredients:ingredients};
     this.setState({recipes});
 }
@@ -159,7 +159,7 @@ updateIngredients(ingredients,currentIndex){
   </Modal>
 
 
-          <Button bsStyle="primary" onClick ={(event)=>this.open("showAdd")}>Add Recipe</Button>
+          <Button bsStyle="primary" onClick ={(event)=>this.open("showAdd",currentIndex)}>Add Recipe</Button>
       </div>
     );
   }
